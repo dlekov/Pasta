@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Паста с Пилешко и Чедър</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:    #FAF6F0;
+    --oat:      #EDE0CC;
+    --warm-mid: #C17F3A;
+    --brown:    #7A3B1E;
+    --dark:     #2A1208;
+    --text:     #3A2010;
+    --muted:    #7A5A42;
+    --white:    #FFFFFF;
+    --green:    #4A7C59;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .hero {
+    background: var(--brown);
+    color: var(--cream);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 30%, rgba(193,127,58,.3) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--warm-mid); margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+    line-height: 1.15; color: var(--cream);
+    max-width: 560px; margin: 0 auto 16px;
+  }
+  .hero-sub {
+    font-size: 15px; color: var(--oat);
+    max-width: 420px; margin: 0 auto 32px; font-weight: 300;
+  }
+  .macro-pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(193,127,58,.4);
+    border-radius: 100px; padding: 7px 18px;
+    font-size: 13px; font-weight: 500; color: var(--cream);
+    display: flex; gap: 6px; align-items: center;
+  }
+  .pill span { color: var(--warm-mid); font-weight: 700; font-size: 15px; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  .servings-bar {
+    background: var(--oat); border-bottom: 1px solid #D9CEBC;
+    padding: 16px 20px; display: flex;
+    align-items: center; justify-content: center; gap: 16px;
+  }
+  .servings-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .servings-ctrl { display: flex; align-items: center; gap: 12px; }
+  .srv-btn {
+    width: 32px; height: 32px;
+    background: var(--brown); color: var(--cream);
+    border: none; border-radius: 50%; font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: opacity .15s;
+  }
+  .srv-btn:hover { opacity: .8; }
+  #srv-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--brown);
+    min-width: 24px; text-align: center;
+  }
+
+  .section { padding: 36px 0 28px; border-bottom: 1px solid var(--oat); }
+  .section:last-child { border-bottom: none; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; font-weight: 700; color: var(--brown);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--oat); }
+
+  .ingredient-list { list-style: none; }
+  .ingredient-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--oat); font-size: 15px;
+  }
+  .ingredient-item:last-child { border-bottom: none; }
+  .ing-name { color: var(--text); }
+  .ing-amount { font-weight: 600; color: var(--brown); white-space: nowrap; margin-left: 16px; }
+
+  .steps-list { list-style: none; }
+  .step {
+    display: grid; grid-template-columns: 40px 1fr;
+    gap: 0 16px; padding: 16px 0; border-bottom: 1px solid var(--oat);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 40px; height: 40px;
+    background: var(--brown); color: var(--cream);
+    border-radius: 50%; font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-title { font-weight: 600; font-size: 14px; color: var(--brown); margin-bottom: 4px; }
+  .step-text { font-size: 14px; color: var(--text); line-height: 1.65; }
+  .step-timer {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 8px; background: var(--oat); border-radius: 100px;
+    padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--brown);
+    cursor: pointer; border: 1px solid #D9CEBC;
+    user-select: none; transition: background .15s;
+  }
+  .step-timer:hover { background: var(--warm-mid); color: var(--cream); border-color: var(--warm-mid); }
+  .step-timer.running { background: var(--green); color: var(--cream); border-color: var(--green); }
+  .step-timer.done { background: #C0392B; color: var(--cream); border-color: #C0392B; }
+
+  .notes-grid { display: grid; gap: 12px; }
+  .note-card {
+    background: var(--white); border: 1px solid var(--oat);
+    border-left: 3px solid var(--warm-mid);
+    border-radius: 0 8px 8px 0; padding: 14px 16px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .note-card strong {
+    color: var(--brown); display: block; margin-bottom: 3px;
+    font-size: 12px; letter-spacing: .05em; text-transform: uppercase;
+  }
+
+  footer { text-align: center; padding: 32px 20px; font-size: 12px; color: var(--muted); }
+
+  @media (max-width: 480px) { .hero { padding: 40px 16px 36px; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="hero-eyebrow">Здравословно ястие</p>
+  <h1>Пълнозърнеста Паста с Пилешко и Чедър</h1>
+  <p class="hero-sub">Балансирано ястие с висок протеин, бавни въглехидрати и умерени мазнини — подходящо за обяд или вечеря</p>
+  <div class="macro-pills">
+    <div class="pill">🔥 <span>~545</span> kcal</div>
+    <div class="pill">💪 <span>53g</span> протеин</div>
+    <div class="pill">🌾 <span>48g</span> въглехидрати</div>
+    <div class="pill">🥑 <span>14g</span> мазнини</div>
+  </div>
+</header>
+
+<div class="servings-bar">
+  <span class="servings-label">Порции:</span>
+  <div class="servings-ctrl">
+    <button class="srv-btn" onclick="changeServings(-1)">−</button>
+    <div id="srv-count">1</div>
+    <button class="srv-btn" onclick="changeServings(1)">+</button>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <h2 class="section-title">Съставки</h2>
+    <ul class="ingredient-list" id="ing-list"></ul>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Приготвяне</h2>
+    <ol class="steps-list">
+      <li class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Сваряване на пастата</div>
+          <div class="step-text">Свари пълнозърнестата паста в подсолена вода според инструкцията на опаковката — обикновено 8–10 мин. Запази 2–3 с.л. от водата за готвене преди да я отцедиш — тя ще сгъсти соса по-късно.</div>
+          <div class="step-timer" onclick="startTimer(this, 540)">⏱ 9 мин</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Запържване на чесъна</div>
+          <div class="step-text">Докато пастата се вари, загрей 5 мл зехтин в тиган на средна температура. Добави чесъна (насечен или цял — по предпочитание) и запържи 60 секунди до ухание. Не позволявай да почернее.</div>
+          <div class="step-timer" onclick="startTimer(this, 60)">⏱ 1 мин</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Добавяне на доматеното пюре</div>
+          <div class="step-text">Изсипи доматеното пюре в тигана. Добави ригана, солта и черния пипер. Разбъркай и остави да се задуши на тих огън 5 минути докато сосът се концентрира и поема вкусовете.</div>
+          <div class="step-timer" onclick="startTimer(this, 300)">⏱ 5 мин</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Добавяне на пилешкото</div>
+          <div class="step-text">Добави пилешкото филе — нарязано на ивици или на кубчета. Разбъркай да се поеме в соса. Ако пилешкото е сурово: запържи го отделно преди стъпка 2 докато не остане розово отвътре, след което продължи. Ако е вече сварено/изпечено: добавяш само да се затопли, 1–2 мин.</div>
+          <div class="step-timer" onclick="startTimer(this, 120)">⏱ 2 мин</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Свързване на пастата</div>
+          <div class="step-text">Добави отцедената паста в тигана. Изсипи запазената вода от готвенето (1–2 с.л.) и разбъркай добре. Гответи още 1 минута на тих огън — пастата ще поеме вкуса на соса.</div>
+          <div class="step-timer" onclick="startTimer(this, 60)">⏱ 1 мин</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Сервиране</div>
+          <div class="step-text">Сервирай веднага. Поръси отгоре с настъргания чедър (настърган на момента ако е възможно). Чедърът се топи леко от топлината на ястието и създава кремообразен ефект.</div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Бележки & Вариации</h2>
+    <div class="notes-grid">
+      <div class="note-card">
+        <strong>За пилешкото</strong>
+        Готовото тегло е 150g — суровото ще е ~185–195g (пилешкото губи ~20–25% тегло при готвене). Ако мериш сурово, вземи ~190g.
+      </div>
+      <div class="note-card">
+        <strong>Доматеното пюре</strong>
+        Използвай концентрат (без добавена захар) или пасирани домати. Концентратът дава по-наситен вкус с по-малко количество.
+      </div>
+      <div class="note-card">
+        <strong>Чедър vs пармезан</strong>
+        Чедърът се топи и се смесва в ястието, пармезанът остава по-зърнест като топинг. При чедър вкусът е по-мек и кремообразен.
+      </div>
+      <div class="note-card">
+        <strong>Meal prep</strong>
+        Свари пастата al dente (не напълно). При загряване добави 1–2 с.л. вода и загрей в тиган на тих огън — запазва текстурата по-добре от микровълнова.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Рецепта · Пълнозърнеста Паста с Пилешко и Чедър
+</footer>
+
+<script>
+const BASE = 1;
+const ingredients = [
+  { name: 'Пълнозърнеста паста (суха)',       base: 50,  unit: 'g' },
+  { name: 'Пилешко филе (готово тегло)',       base: 150, unit: 'g' },
+  { name: 'Доматено пюре',                     base: 120, unit: 'g' },
+  { name: 'Чедър (настърган)',                 base: 20,  unit: 'g' },
+  { name: 'Чесън',                             base: 2,   unit: 'скилидки' },
+  { name: 'Зехтин',                            base: 5,   unit: 'ml' },
+  { name: 'Сол',                               base: 2,   unit: 'g' },
+  { name: 'Черен пипер',                       base: 1,   unit: 'g' },
+  { name: 'Риган или босилек (сушен)',         base: 1,   unit: 'ч.л.' },
+  { name: 'Вода за готвене на пастата',        base: 500, unit: 'ml' },
+];
+
+let servings = 1;
+
+function fmt(n) {
+  if (typeof n === 'string') return n;
+  const r = Math.round(n * 10) / 10;
+  return r % 1 === 0 ? r : r.toFixed(1);
+}
+
+function renderIngredients() {
+  const ratio = servings / BASE;
+  const ul = document.getElementById('ing-list');
+  ul.innerHTML = ingredients.map(i => {
+    const scaled = i.base * ratio;
+    let display;
+    if (i.unit === 'скилидки') display = `${fmt(scaled)} скилидки`;
+    else if (i.unit === 'ч.л.') display = `${fmt(scaled)} ч.л.`;
+    else display = `${fmt(scaled)} ${i.unit}`;
+    return `<li class="ingredient-item">
+      <span class="ing-name">${i.name}</span>
+      <span class="ing-amount">${display}</span>
+    </li>`;
+  }).join('');
+}
+
+function changeServings(delta) {
+  servings = Math.max(1, Math.min(20, servings + delta));
+  document.getElementById('srv-count').textContent = servings;
+  renderIngredients();
+}
+
+const timers = new Map();
+function startTimer(el, totalSec) {
+  if (timers.has(el)) {
+    clearInterval(timers.get(el));
+    timers.delete(el);
+    el.textContent = `⏱ ${fmtTime(totalSec)}`;
+    el.className = 'step-timer';
+    return;
+  }
+  let remaining = totalSec;
+  el.classList.add('running');
+  const id = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(id); timers.delete(el);
+      el.textContent = '✓ Готово!';
+      el.className = 'step-timer done';
+      setTimeout(() => { el.textContent = `⏱ ${fmtTime(totalSec)}`; el.className = 'step-timer'; }, 3000);
+    } else {
+      el.textContent = `⏸ ${fmtTime(remaining)}`;
+    }
+  }, 1000);
+  timers.set(el, id);
+  el.textContent = `⏸ ${fmtTime(remaining)}`;
+}
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return m > 0 ? `${m}:${String(sec).padStart(2,'0')} мин` : `${sec} сек`;
+}
+
+renderIngredients();
+</script>
+</body>
+</html>
